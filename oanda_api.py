@@ -5,6 +5,7 @@ import utils
 import requests
 import defs
 import pprint
+import plotly.graph_objects as go
 class OandaAPI():
 
     def __init__(self):
@@ -86,6 +87,38 @@ class OandaAPI():
     def save_candlestick(self, df, pair, granularity):
         """ Save candlestick dataframe to csv"""
         df.to_csv(f"./Data/{pair}_{granularity}.csv")
+
+    def format_plotly(self, fig, df_plot):
+        fig.add_trace(go.Candlestick(
+        x=df_plot.time, open=df_plot.mid_o, high=df_plot.mid_h, low = df_plot.mid_l, close=df_plot.mid_c,
+        line=dict(width=1), opacity=1,
+        increasing_fillcolor="#24A06B",
+        decreasing_fillcolor="#CC2E3C",
+        increasing_line_color="#2EC886",
+        decreasing_line_color="#FF3A4C"
+        ))
+        fig.update_layout(width=1000, height=400, paper_bgcolor = "#1e1e1e", plot_bgcolor = "#1e1e1e",
+                        margin=dict(l=10, b=10, t=10, r=10), 
+                        font=dict(size=10, color="#e1e1e1"))
+        fig.update_xaxes(gridcolor="#1f292f",
+                        showgrid=True,
+                        fixedrange=True,
+                        rangeslider=dict(visible=False))
+        fig.update_yaxes(gridcolor="#1f292f",
+                        showgrid=True)
+        
+        ### Add MA trend lines
+        fig.add_trace(go.Scatter(x=df_plot.time, y=df_plot.MA_8, 
+            line=dict(color="#027FC3", width=2),
+            line_shape="spline",
+            name="MA_8"))
+        
+        fig.add_trace(go.Scatter(x=df_plot.time, y=df_plot.MA_64, 
+            line=dict(color="#ffff00", width=2),
+            line_shape="spline",
+            name="MA_64"))
+    
+        return fig
 
 # if __name__ == "__main__":
 #     api = OandaAPI()
