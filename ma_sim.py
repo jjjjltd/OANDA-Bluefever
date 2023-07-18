@@ -1,6 +1,7 @@
 import pandas as pd
 import utils
 import instrument
+import ma_result
 pd.set_option('display.max_columns', None)
 
 def is_trade(row):
@@ -43,9 +44,21 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
     df_trades["PIP_Delta"] = (df_trades.mid_c.diff() /  i_pair.ins_pipLocation).shift(-1)
     df_trades["GAIN"] = df_trades.PIP_Delta * df_trades.IS_TRADE
 
-    print(f"{i_pair.ins_name} {mashort}/{malong} made {df_trades.shape[0]} trades.  Gain: {df_trades['GAIN'].sum():.2f}")
+    #  print(f"{i_pair.ins_name} {mashort}/{malong} made {df_trades.shape[0]} trades.  Gain: {df_trades['GAIN'].sum():.2f}")
 
-    return df_trades["GAIN"].sum()
+    params = {'mashort': mashort, 'malong': malong}
+    return ma_result.MAResult(
+        i_pair.ins_name,
+        df_trades,
+        params
+    )
+
+def process_results(results):    
+    results_list = [r.result_obj() for r in results]
+    final_df = pd.DataFrame.from_dict(results_list)
+
+    print(final_df.info())
+    print(final_df.head())
 
 def run():
 
@@ -58,22 +71,15 @@ def run():
     price_data = get_price_data(pairname, granularity)
     price_data = process_data(ma_short, ma_long, price_data)
 
-    # Set defaults for best pips, best ma-short and long...
-    best = -1000000.0
-    b_mashort = 0
-    b_malong = 0
+    results = []
 
     for _malong in ma_long:
         for _mashort in ma_short:
             if _mashort >= _malong:
                 continue
-            res = evaluate_pair(i_pair, _mashort, _malong, price_data.copy())
-            if res > best:
-                best = res
-                b_mashort = _mashort
-                b_malong = _malong
-
-    print(f"Best strategy: {best:.2f} return with  MASHORT: {b_mashort:.0f}, MALONG: {b_malong:.0f}")        
+            results.append(evaluate_pair(i_pair, _mashort, _malong, price_data.copy()))
+            
+    process_results(results)
 
 if __name__ == "__main__":
     run()
