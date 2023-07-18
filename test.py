@@ -1,5 +1,6 @@
 def get_all_pairs(our_curr):
     
+    
     pairs=[]
     
     for i in range(len(our_curr)):
