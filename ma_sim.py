@@ -1,7 +1,10 @@
 import pandas as pd
+from dateutil.parser import *
+
 import utils
 import instrument
 import ma_result
+
 pd.set_option('display.max_columns', None)
 
 def is_trade(row):
@@ -36,6 +39,8 @@ def process_data(ma_short, ma_long, price_data):
 
 def evaluate_pair(i_pair, mashort, malong, price_data):
 
+    price_data = price_data[['time', 'mid_c', get_ma_col(mashort), get_ma_col(malong)]].copy()
+
     price_data["DIFF"] = price_data[get_ma_col(mashort)] - price_data[get_ma_col(malong)]
     price_data["DIFF_PREV"] = price_data.DIFF.shift(1)
     price_data["IS_TRADE"] = price_data.apply(is_trade, axis = 1)
@@ -43,6 +48,17 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
     df_trades = price_data[price_data.IS_TRADE!=0].copy()
     df_trades["PIP_Delta"] = (df_trades.mid_c.diff() /  i_pair.ins_pipLocation).shift(-1)
     df_trades["GAIN"] = df_trades.PIP_Delta * df_trades.IS_TRADE
+    df_trades["PAIR"] = i_pair.ins_name
+    df_trades["MASHORT"] = mashort
+    df_trades["MALONG"] = malong
+
+    del df_trades[get_ma_col(mashort)]
+    del df_trades[get_ma_col(malong)]
+
+    df_trades["time"] = [parse(x) for x in df_trades.time]
+    df_trades["DURATION"] = df_trades.time.diff().shift(-1)
+    df_trades["DURATION"] = [x.total_seconds() / 3600 for x in df_trades.DURATION]
+    df_trades.dropna(inplace=True)
 
     #  print(f"{i_pair.ins_name} {mashort}/{malong} made {df_trades.shape[0]} trades.  Gain: {df_trades['GAIN'].sum():.2f}")
 
@@ -52,6 +68,11 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
         df_trades,
         params
     )
+
+def store_trades(results):
+    all_trade_df_list = [x.df_trades for x in results]
+    all_trade_df = pd.concat(all_trade_df_list)
+    all_trade_df.to_csv("./Data/All Trades.csv")
 
 def process_results(results):    
     results_list = [r.result_obj() for r in results]
@@ -98,9 +119,9 @@ def run():
             for _mashort in ma_short:
                 if _mashort >= _malong:
                     continue
-                results.append(evaluate_pair(i_pair, _mashort, _malong, price_data.copy()))
+                results.append(evaluate_pair(i_pair, _mashort, _malong, price_data))
             
     process_results(results)
-
+    store_trades(results)
 if __name__ == "__main__":
     run()
