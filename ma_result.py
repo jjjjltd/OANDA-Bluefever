@@ -9,6 +9,7 @@ class MAResult():
 
     def result_obj(self):
         d = {
+            'time': self.df_trades.time,
             'pair': self.pairname,
             'num_trades': self.df_trades.shape[0],
             'total_gain': self.df_trades.GAIN.sum(),

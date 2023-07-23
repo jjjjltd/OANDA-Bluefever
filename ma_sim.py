@@ -26,6 +26,7 @@ def get_price_data(pairname, granularity):
     non_nums = ["time", "volume", "ticker"]
     num_cols = [x for x in df.columns if x not in non_nums]
     df[num_cols] = df[num_cols].apply(pd.to_numeric)
+    df.info()
     return df[["time", "ticker", "mid_o", "mid_h", "mid_l", "mid_c"]]
 
 def process_data(ma_short, ma_long, price_data):
@@ -120,6 +121,7 @@ def run():
                 if _mashort >= _malong:
                     continue
                 results.append(evaluate_pair(i_pair, _mashort, _malong, price_data))
+                break
             
     process_results(results)
     store_trades(results)
