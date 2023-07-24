@@ -62,8 +62,7 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
     df_trades.dropna(inplace=True)
 
     #  print(f"{i_pair.ins_name} {mashort}/{malong} made {df_trades.shape[0]} trades.  Gain: {df_trades['GAIN'].sum():.2f}")
-
-    params = {'mashort': mashort, 'malong': malong}
+    params = {'mashort': mashort, 'malong': malong, }
     return ma_result.MAResult(
         i_pair.ins_name,
         df_trades,
@@ -78,9 +77,12 @@ def store_trades(results):
 def process_results(results):    
     results_list = [r.result_obj() for r in results]
     final_df = pd.DataFrame.from_dict(results_list)
+    print(results_list)
+    print(final_df.shape)
+    print(f"Here: {final_df.info}")
     final_df.to_csv("./Data/ma_test_results.csv")
 
-    print(final_df.shape, final_df.num_trades.sum())
+    # print(final_df.shape, final_df.num_trades.sum())
 
 def get_existing_pairs(pair_str):
     existing_pairs = instrument.Instrument.get_instruments_dict().keys()
@@ -110,7 +112,7 @@ def run():
 
     results = []
     for pairname in test_pairs:
-        print("running pair...", pairname)
+        # print("running pair...", pairname)
         i_pair = instrument.Instrument.get_instruments_dict()[pairname]
 
         price_data = get_price_data(pairname, granularity)

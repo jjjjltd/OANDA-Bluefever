@@ -12,7 +12,7 @@ class OandaAPI():
         """ Oanda API initialisation"""
         self.session = requests.Session()
         self.candles_count = 400
-        self.granularity = "H4"
+        self.granularity = "H1"
     
     def __repr__(self):
         """ Output for log on API creation.  """
