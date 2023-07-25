@@ -1,6 +1,28 @@
 import pandas as pd
 import xlsxwriter
 
+def get_line_chart(book, start_row, end_row, labesl_col, data_col, title, sheetname):
+    chart = book.add_chart({'type': 'line'})
+    chart.add_series({
+        'categories':  [sheetname, start_row, labesl_col, end_row, labesl_col],
+        'values': [sheetname, start_row, data_col, end_row, data_col],
+        'line': {'color': 'blue'}
+    })
+
+    chart.set_title({'name': title})
+    chart.set_legend({'none': True})
+
+    return chart
+
+def add_chart(pairname, cross, df, writer):
+
+    workbook = writer.book
+    worksheet = writer.sheets[pairname]
+
+    chart = get_line_chart(workbook, 1, df.shape[0], 8, 9, f"Cum. gain for {pairname}, {cross}", pairname)
+    chart.set_size({'x_scale': 2.5, 'y_scale': 2.5})
+    worksheet.insert_chart(1, 10, chart)
+
 def add_pair_charts(ma_test_res, all_trades, writer):
 
     cols = ["time", "CUM_GAIN"]
@@ -8,13 +30,10 @@ def add_pair_charts(ma_test_res, all_trades, writer):
 
     # For each (de-duplicated) index, return columns of interest for each row
     for index, row in df_temp.iterrows():
-        # print("index", index)
-        # print("row", row.CROSS, row.pair)
         temp_all_trades = all_trades[(all_trades.CROSS==row.CROSS) & (all_trades.PAIR==row.pair) ].copy()
-        print(temp_all_trades.head())
         temp_all_trades["CUM_GAIN"] = temp_all_trades.GAIN.cumsum()
         temp_all_trades[cols].to_excel(writer, sheet_name=row.pair, startrow=0, startcol=7)
-      
+        add_chart(row.pair, row.CROSS, temp_all_trades, writer) 
 
 def add_pair_sheets(ma_test_res, writer):
     for p in ma_test_res.pair.unique():

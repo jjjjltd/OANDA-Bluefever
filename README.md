@@ -1,7 +1,7 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress:  https://www.youtube.com/watch?v=jORD4saNqfc
+Latest progress:  https://www.youtube.com/watch?v=Xyhf4vhf2V4  04:00
 ma_excel.py
 
 # Back Story
@@ -12,4 +12,4 @@ Online training risks following parrot fashion without fully understanding what 
 # Basic Flow
 
 1. Recap1.py:  Creates all of the currency/period files in format Base_Quote_granularity e.g. GBP_JPY_H1.
-2. MA_sim.py:  Write on ma_test_results.csv and 'all trades.csv'
+2. MA_sim.py:  Write analysis data forward to: ma_test_results.csv and 'all trades.csv'
