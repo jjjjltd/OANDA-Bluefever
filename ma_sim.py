@@ -70,21 +70,23 @@ def evaluate_pair(i_pair, mashort, malong, price_data):
     )
 
 def store_trades(results):
+    """ Write full Trade Details to ./Data/All Trades.csv """
     all_trade_df_list = [x.df_trades for x in results]
     all_trade_df = pd.concat(all_trade_df_list)
     all_trade_df.to_csv("./Data/All Trades.csv")
 
 def process_results(results):    
+    """ Write out results to ./Data/ma_test_results.csv  
+    Note:  This file is aggregated by ma_results.py and has a single line per pair/cross.  Not transaction level, therefore no time data.  """
     results_list = [r.result_obj() for r in results]
     final_df = pd.DataFrame.from_dict(results_list)
-    print(results_list)
-    print(final_df.shape)
-    print(f"Here: {final_df.info}")
+   
     final_df.to_csv("./Data/ma_test_results.csv")
 
     # print(final_df.shape, final_df.num_trades.sum())
 
 def get_existing_pairs(pair_str):
+    """  Receive string of individual currencies, pair up and check if they are available instruments.    """
     existing_pairs = instrument.Instrument.get_instruments_dict().keys()
     pairs = pair_str.split(",")
 
@@ -100,6 +102,17 @@ def get_existing_pairs(pair_str):
     return test_list
 
 def run():
+    """ 
+    1. Get existing pairs: read pairs from /Data/available instruments.csv
+          Note:  available instruments written in getinstruments.py
+    2. Get instrument data, including decimal place of pip.
+    3. Aggregate data to ma_test_results using ma_result.py, MAResult class.
+    4. Write detail to all_trades
+     
+      
+       
+        
+          """
 
     pair_str = "GBP,JPY,USD,CAD,EUR,CHF,NZD"
     granularity = "H1"
@@ -112,7 +125,7 @@ def run():
 
     results = []
     for pairname in test_pairs:
-        # print("running pair...", pairname)
+        print("running pair...", pairname)
         i_pair = instrument.Instrument.get_instruments_dict()[pairname]
 
         price_data = get_price_data(pairname, granularity)

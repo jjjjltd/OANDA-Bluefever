@@ -15,21 +15,26 @@ class Instrument():
 
     @classmethod
     def get_instruments_df(cls):
+        """ Return DataFrame of instruments data e.g. from GBP_JPY_H1 """
         return pd.read_csv(utils.get_instruments_data_filename())
     
     @classmethod
     def get_instruments_list(cls):
         df = cls.get_instruments_df()
+        """ Convert list of instruments into a dictionary, and return.  """
         return [Instrument(x) for x in df.to_dict(orient='records')]
 
     @classmethod
     def get_instruments_dict(cls):
+        """ Return dictionary definition of instrument e.g. 
+        {'ins_name': 'GBP_JPY', 'ins_type': 'CURRENCY', 'ins_displayName': 'GBP/JPY', 'ins_pipLocation': 0.01, 'ins_marginRate': 0.03333333333333}  """
         i_list = cls.get_instruments_list()
         i_keys = [x.ins_name for x in i_list]
         return {k:v for (k, v) in zip(i_keys, i_list)}
 
     @classmethod
     def get_instrument_by_name(cls, pairname):
+        """  Receive pairname, return all data for pairname.  """
         d = cls.get_instruments_dict()
 
         if pairname in d:
