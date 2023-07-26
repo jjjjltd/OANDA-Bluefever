@@ -1,8 +1,8 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress:  https://www.youtube.com/watch?v=Xyhf4vhf2V4  04:00
-ma_excel.py
+Latest progress:  https://www.youtube.com/watch?v=S6XpC5-bEzE
+oanda_api.py
 
 # Back Story
 
