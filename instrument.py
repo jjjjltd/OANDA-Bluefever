@@ -42,8 +42,26 @@ class Instrument():
         else:
             return None
 
+    @classmethod    
+    def get_pairs_from_string(cls, pair_str):
+        """  Receive string of individual currencies, pair up and check if they are available instruments.    """
+        existing_pairs = cls.get_instruments_dict().keys()
+        pairs = pair_str.split(",")
+
+        pair_list = []
+
+        # Loop through pairs list twice (each currency within each currency)
+        for p1 in pairs:
+            for p2 in pairs:
+                p = f"{p1}_{p2}"
+                if p in existing_pairs:
+                    pair_list.append(p)
+
+        return pair_list
+
 if __name__ == "__main__":
-    print(Instrument.get_instruments_list())
-    for k, v in Instrument.get_instruments_dict().items():
-        print(k, v)
-    print(Instrument.get_instrument_by_name("AUD_SGD"))
+    # print(Instrument.get_instruments_list())
+    # for k, v in Instrument.get_instruments_dict().items():
+    #     print(k, v)
+    # print(Instrument.get_instrument_by_name("AUD_SGD"))
+    print(Instrument.get_pairs_from_string("GBP,EUR,USD,CAD"))

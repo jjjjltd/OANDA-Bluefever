@@ -122,7 +122,7 @@ def run():
     ma_short = [4, 8, 16, 24, 32, 64]
     ma_long = [8, 16, 32, 64, 96, 128, 256]
 
-    test_pairs = get_existing_pairs(pair_str)
+    test_pairs = instrument.Instrument.get_pairs_from_string(pair_str)
 
     
 
