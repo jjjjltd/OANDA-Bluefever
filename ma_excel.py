@@ -64,6 +64,8 @@ def create_excel(ma_test_res, all_trades):
     add_pair_sheets(ma_test_res, writer)
     add_pair_charts(ma_test_res, all_trades, writer)
 
+    print(f"\n Results written to:  {filename}")
+
     writer.save()
 
 if __name__ == "__main__":

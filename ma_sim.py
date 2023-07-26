@@ -4,6 +4,7 @@ from dateutil.parser import *
 import utils
 import instrument
 import ma_result
+import ma_excel
 
 pd.set_option('display.max_columns', None)
 
@@ -74,6 +75,7 @@ def store_trades(results):
     all_trade_df_list = [x.df_trades for x in results]
     all_trade_df = pd.concat(all_trade_df_list)
     all_trade_df.to_csv("./Data/All Trades.csv")
+    return all_trade_df
 
 def process_results(results):    
     """ Write out results to ./Data/ma_test_results.csv  
@@ -83,7 +85,8 @@ def process_results(results):
    
     final_df.to_csv("./Data/ma_test_results.csv")
 
-    # print(final_df.shape, final_df.num_trades.sum())
+    return final_df
+
 
 def get_existing_pairs(pair_str):
     """  Receive string of individual currencies, pair up and check if they are available instruments.    """
@@ -138,7 +141,9 @@ def run():
                 results.append(evaluate_pair(i_pair, _mashort, _malong, price_data))
                 break
             
-    process_results(results)
-    store_trades(results)
+    final_df = process_results(results)
+    all_trades_df = store_trades(results)
+
+    ma_excel.create_excel(final_df, all_trades_df)
 if __name__ == "__main__":
     run()
