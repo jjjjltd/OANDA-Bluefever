@@ -11,6 +11,30 @@ INCREMENTS = {
     "H4": 240
 }
 
+def get_candles_df(json_response):
+
+    our_data =[]
+
+    prices = ["bid", "mid", "ask"]
+    ohlc = ["o", "h", "l", "c"]
+
+    for candle in json_response["candles"]:
+        if candle["complete"] == False:
+            continue
+
+        new_dict = {}
+        new_dict["ticker"] = json_response["instrument"]
+        new_dict["time"] = candle["time"]
+        new_dict["volume"] = candle["volume"]
+        
+        for price in prices:
+            for oh in ohlc:
+                new_dict[f"{price}_{oh}"] = candle[price][oh]
+
+        our_data.append(new_dict)
+        
+    return pd.DataFrame.from_dict(our_data)
+
 def create_file(pair, granularity, api):
     candle_count = 2000
     time_step = INCREMENTS[granularity] * candle_count
@@ -32,14 +56,32 @@ def create_file(pair, granularity, api):
         if date_to > end_date:
             date_to=end_date
             # TODO:  Collect candles
-        print(date_from, date_to)
+        
+        code, json_data = api.fetch_candlesticks(pair_name=pair,
+                            granularity=granularity,
+                            date_from=date_from,
+                            date_to=date_to)
+        
+        if code == 200 and len(json_data["candles"]) > 0:
+            candle_dfs.append(get_candles_df(json_data))
+        elif code != 200:
+            print("ERROR:", pair, granularity, date_from, date_to)
+            break
+        
         date_from = date_to
 
+    final_df = pd.concat(candle_dfs)
+    final_df.drop_duplicates(subset="time", inplace=True)
+    final_df.sort_values(by="time", inplace=True)
 
+    final_df.to_csv(utils.get_hist_data_filename(pair, granularity))
+
+    print(f"{pair} {granularity} {final_df.iloc[0].time} {final_df.iloc[-1].time}")
 
 def run_collection():
     pair_list = "GBP,JPY,USD,CAD,EUR,CHF,NZD"
-    api=OandaAPI
+    api=OandaAPI()
+    print(api.candles_count)
     # g = granularity, i=instrument
     for g in INCREMENTS.keys():
         for i in Instrument.get_pairs_from_string(pair_list):
