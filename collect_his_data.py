@@ -55,7 +55,6 @@ def create_file(pair, granularity, api):
         date_to = date_from + dt.timedelta(seconds=time_step*60)
         if date_to > end_date:
             date_to=end_date
-            # TODO:  Collect candles
         
         code, json_data = api.fetch_candlesticks(pair_name=pair,
                             granularity=granularity,
@@ -66,7 +65,6 @@ def create_file(pair, granularity, api):
             candle_dfs.append(get_candles_df(json_data))
         elif code != 200:
             print("ERROR:", pair, granularity, date_from, date_to)
-            break
         
         date_from = date_to
 
@@ -87,7 +85,6 @@ def run_collection():
         for i in Instrument.get_pairs_from_string(pair_list):
             print(g, i)
             create_file(i, g, api)
-            break
 
 if __name__ == "__main__":
     run_collection()
