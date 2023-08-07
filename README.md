@@ -1,7 +1,7 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress: https://www.youtube.com/watch?v=kQe1ajXXkNw&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=49
+Latest progress: https://www.youtube.com/watch?v=kQe1ajXXkNw&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=49  00:23
 inside_bar_sim.py [apparently, it's new]
 
 # Back Story
