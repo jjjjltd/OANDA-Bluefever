@@ -1,8 +1,8 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress: https://www.youtube.com/watch?v=6R4t37fuFr8&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=48
-inside_bar_timings.ipynb
+Latest progress: https://www.youtube.com/watch?v=kQe1ajXXkNw&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=49
+inside_bar_sim.py [apparently, it's new]
 
 # Back Story
 
@@ -11,5 +11,6 @@ Online training risks following parrot fashion without fully understanding what 
 
 # Basic Flow
 
-1. Recap1.py:  Creates all of the currency/period files in format Base_Quote_granularity e.g. GBP_JPY_H1.
+1. Collect_his_data.py:  Creates all of the currency/period files in format Base_Quote_granularity e.g. GBP_JPY_H1.
 2. MA_sim.py:  Write analysis data forward to: ma_test_results.csv and 'all trades.csv'
+3. inside_bar_explore:  Sub analyses 4 hour candles with 5 minutes candles, plus some plotting.

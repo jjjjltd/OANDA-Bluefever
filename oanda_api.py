@@ -1,11 +1,13 @@
 # https://www.youtube.com/watch?v=wg5herWaV4M&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=14
 
 import pandas as pd
+from dateutil.parser import *
 import utils
 import requests
 import defs
 import pprint
 import plotly.graph_objects as go
+
 class OandaAPI():
 
     def __init__(self):
@@ -42,7 +44,7 @@ class OandaAPI():
         else:
             print("Something weird happened here.")
 
-    def fetch_candlesticks(self, pair_name, count=None, granularity="H1", date_from=None, date_to=None):
+    def fetch_candlesticks(self, pair_name, count=None, granularity="H1", date_from=None, date_to=None, as_df=False):
         """  Get candlesticks from OANDA URL.  """
         url = f"{defs.OANDA_URL}/instruments/{pair_name}/candles"
         
@@ -64,38 +66,34 @@ class OandaAPI():
         if response.status_code != 200:
             return response.status_code, None
 
-
-        
-        return response.status_code, response.json()
+        if as_df == True:
+            json_data = response.json()['candles']
+            return response.status_code, OandaAPI.candles_to_df(json_data)
+        else:
+            return response.status_code, response.json()
     
-    def build_candlesdf(self, response):
+    @classmethod
+    def candles_to_df(cls, json_data):
         prices = ["bid", "mid", "ask"]
         ohlc = ["o", "h", "l", "c"]
-        candle_df = pd.DataFrame()
+        
         our_data = []
-        
-        for ticker in response["instrument"]:
-                                            
-            for candle in response["candles"]:
-        
+        for candle in json_data:
+            if candle['complete'] == False:
+                continue                                
+            new_dict = {}
+            new_dict["time"] = candle['time']
+            new_dict["volume"] = candle["volume"]
 
-                new_dict = dict()
-                new_dict["ticker"] = response["instrument"]
+            for price in prices:
+                for oh in ohlc:
+                    new_dict[f"{price}_{oh}"] = float(candle[price][oh])
 
+            our_data.append(new_dict)
 
-                if candle["complete"] == False:
-                    continue
-
-                new_dict["time"] = candle["time"]
-                new_dict["volume"] = candle["volume"]
-
-                for price in prices:
-                    for oh in ohlc:
-                        new_dict[f"{price}_{oh}"] = candle[price][oh]
-    
-                our_data.append(new_dict)
-
-        return pd.DataFrame.from_dict(our_data)
+        df = pd.DataFrame.from_dict(our_data)
+        df['time'] = [parse(x) for x in df.time]
+        return df
 
     def save_candlestick(self, df, pair, granularity):
         """ Save candlestick dataframe to csv"""
@@ -137,5 +135,6 @@ if __name__ == "__main__":
     api = OandaAPI()
     date_from = utils.get_utc_dt_from_string("2019-05-05 18:00:00")
     date_to = utils.get_utc_dt_from_string("2019-05-10 18:00:00")
-    print(api.fetch_candlesticks("EUR_USD", date_from=date_from, date_to=date_to))
+    res, df = api.fetch_candlesticks("EUR_USD", date_from=date_from, date_to=date_to, as_df=True)
+    print(df.info())
     
