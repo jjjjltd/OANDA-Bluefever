@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime as dt
+from dateutil.parser import *
 import utils
 import instrument
 import defs
@@ -138,6 +139,7 @@ def get_trades_df(df_raw):
 
 
     df_trades = df[df.SIGNAL!=NONE].copy()
+    df_trades['time'] = [parse(x) for x in df_trades.time]
     df_trades["next"] =  df_trades["time"].shift(-1)
     df_trades["trade_end"] = df_trades.next + dt.timedelta(hours=3, minutes=55)
     df_trades["trade_start"] = df_trades.time + dt.timedelta(hours=4)
