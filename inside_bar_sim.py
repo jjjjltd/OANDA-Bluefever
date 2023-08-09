@@ -139,7 +139,6 @@ def get_trades_df(df_raw):
 
 
     df_trades = df[df.SIGNAL!=NONE].copy()
-    df_trades['time'] = [parse(x) for x in df_trades.time]
     df_trades["next"] =  df_trades["time"].shift(-1)
     df_trades["trade_end"] = df_trades.next + dt.timedelta(hours=3, minutes=55)
     df_trades["trade_start"] = df_trades.time + dt.timedelta(hours=4)
@@ -190,12 +189,18 @@ def run():
         m5_data = pd.read_csv(utils.get_hist_data_filename(pairname, "M5"))
 
 
+        # Kludge:  CSV dones't hold time data correctly, so fix on read
+        h4_data['time'] = [parse(x) for x in h4_data.time]
+        m5_data['time'] = [parse(x) for x in m5_data.time]
+
+
+
         df_trades = get_trades_df(h4_data)
 
         score = evaluate_pair(df_trades, m5_data)
         grand_total += score
         print(f"{pairname} {score:.0f}")
-    print(f"TOTAL: {grand_total:,0f}")
+    print(f"TOTAL: {grand_total:.0f}")
     
 
 if __name__ == "__main__":
