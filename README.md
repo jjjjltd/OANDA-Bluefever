@@ -1,8 +1,8 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress: https://www.youtube.com/watch?v=fZZ7rmxQzJ4&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=50
-inside_bar_sim.py [apparently, it's new]
+Latest progress: https://www.youtube.com/watch?v=usEKEhuMBtw&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=51
+candle_patterns.ipynb
 
 # Back Story
 
@@ -11,6 +11,8 @@ Online training risks following parrot fashion without fully understanding what 
 
 # Basic Flow
 
-1. Collect_his_data.py:  Creates all of the currency/period files in format Base_Quote_granularity e.g. GBP_JPY_H1.
-2. MA_sim.py:  Write analysis data forward to: ma_test_results.csv and 'all trades.csv'
-3. inside_bar_explore:  Sub analyses 4 hour candles with 5 minutes candles, plus some plotting.
+At this point, we're - kind of - consolidating.  
+1.  ma_sim.py:  A simplified moving averages analysis.
+2.  inside_bar_sim.py:  A more sophisticated analysis of inside bar strategy.  Includes more abstraction e.g. an OandaAPI class with various attributes, functions and class methods (functions)
+3.  Currently working on candle_patterns.ipynb.  This is a third 'fresh start' but we've got a lot of well estasblished ground at this point.
+
