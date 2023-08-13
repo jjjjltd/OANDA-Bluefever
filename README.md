@@ -1,8 +1,8 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress: https://www.youtube.com/watch?v=DDUhX14BoHU&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=53
-candle_patterns.ipynb
+Latest progress: https://www.youtube.com/watch?v=kqzAergMRS4&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=55
+candle_indicators.ipynb
 
 # Back Story
 
