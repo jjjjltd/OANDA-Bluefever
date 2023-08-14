@@ -134,8 +134,6 @@ def apply_trend(df):
 def get_pair_data(pair, api):
     code, df = api.fetch_candles(pair, granularity='M5')
 
-    print(type(df))
-
     df['PAIR'] = pair
    
     if code == 200:
