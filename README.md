@@ -1,7 +1,7 @@
 # OANDA-Bluefever
 Following fantastic Youtube videos to build Algorithmic Trading application (eventually)...
 
-Latest progress: https://www.youtube.com/watch?v=f7rDFamAf7c&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=57  1:30
+Latest progress: https://www.youtube.com/watch?v=IRor8aSBY-M&list=PLZ1QII7yudbecO6a-zAI6cuGP1LLnmW8e&index=58
 WebDash directory
 
 # Back Story

@@ -12,7 +12,10 @@
     </div>
     <div id="app">
         {{ message }}
+        <button @click="loadData">Load Data</button>
+        <pre>{{JSON.stringify(kpiData, null, 2) }}</pre>
     </div>
+    
     <script src="app.js"></script>
 </body>
 </html>
