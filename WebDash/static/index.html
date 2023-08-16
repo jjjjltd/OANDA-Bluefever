@@ -12,8 +12,58 @@
     </div>
     <div id="app">
         {{ message }}
+        <br>      
         <button @click="loadData">Load Data</button>
-        <pre>{{JSON.stringify(kpiData, null, 2) }}</pre>
+        <br>
+        <div class="tablecontainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pair</th>
+                        <th>Time</th>
+                        <th>Volume</th>
+                        <th>mid_o</th>
+                        <th>mid_h</th>
+                        <th>mid_l</th>
+                        <th>mid_c</th>
+                        <th>MACD_Cross</th>
+                        <th>BB_Signal</th>
+                        <th>Body Perc</th>
+                        <th>Direction</th>
+                        <th>Hammer</th>
+                        <th>Doji</th>
+                        <th>Marubozu</th>
+                        <th>Spinning Top</th>
+                        <th>Engulfing</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in kpiData" >
+                        <td>{{ item.PAIR }} </td>	
+                        <td>{{ item.time }} </td>	
+                        <td>{{ item.volume }} </td>	
+                        <td>{{ item.mid_o }} </td>	
+                        <td>{{ item.mid_h }} </td>	
+                        <td>{{ item.mid_l }} </td>	
+                        <td>{{ item.mid_c }} </td>	
+                        <td>{{ item.MACD_CROSS }} </td>	
+                        <td>{{ item.BB_SIGNAL }} </td>	
+                        <td>{{ item.BODY_PERC.toFixed(2) }} </td>	
+                        <td>{{ item.DIRECTION }} </td>	
+                        <td>{{ item.HAMMER }} </td>	
+                        <td>{{ item.DOJI }} </td>	
+                        <td>{{ item.MARUBOZU }} </td>	
+                        <td>{{ item.SPINNING_TOP }} </td>	
+                        <td>{{ item.ENGULFING }} </td>	
+                        <td>{{ item.TREND }} </td>	
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- <pre>{{JSON.stringify(kpiData, null, 2) }}</pre> -->
     </div>
     
     <script src="app.js"></script>
