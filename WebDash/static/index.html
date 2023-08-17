@@ -41,16 +41,16 @@
                         <td>{{ item.time }}</td>    
                         <td>{{ item.volume }}</td>   
                         <td>{{ item.mid_c }}</td>   
-                        <td :class="applyDirectionClass(item.DIRECTOIN)"></td>
-                        <td :class="applyOnOffClass(item.MACD_CROSS)"></td>  
-                        <td :class="applyOnOffClass(item.BB_SIGNAL)"></td>   
-                        <td :class="applyOnOffClass(item.HAMMER)"></td>
-                        <td :class="applyOnOffClass(item.DOJI)"></td>    
-                        <td :class="applyOnOffClass(item.MARUBOZU)"></td>    
-                        <td :class="applyOnOffClass(item.SPINNING_TOP)"></td>    
-                        <td :class="applyOnOffClass(item.ENGULFING)"></td>
+                        <td :class="applyDirectionClass(item.DIRECTION)">{{item.DIRECTION}}</td>
+                        <td :class="applyOnOffClass(item.MACD_CROSS)">{{item.MACD_CROSS}}</td>  
+                        <td :class="applyOnOffClass(item.BB_SIGNAL)">{{item.BB_SIGNAL}}</td>   
+                        <td :class="applyOnOffClass(item.HAMMER)">{{item.HAMMER}}</td>
+                        <td :class="applyOnOffClass(item.DOJI)">{{item.DOJI}}</td>    
+                        <td :class="applyOnOffClass(item.MARUBOZU)">{{item.MARUBOZU}}</td>    
+                        <td :class="applyOnOffClass(item.SPINNING_TOP)">{{item.SPINNING_TOP}}</td>    
+                        <td :class="applyOnOffClass(item.ENGULFING)">{{item.ENGULFING}}</td>
                         <td>{{item.BODY_PERC.toFixed(2)}}</td>   
-                        <td :class="applyDirectionClass(item.TREND)"></td>   
+                        <td :class="applyDirectionClass(item.TREND)">{{item.TREND}}</td>   
                     </tr>
                 </tbody>
 
