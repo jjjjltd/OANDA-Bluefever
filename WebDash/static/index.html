@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <title>Forex</title>
 </head>
 <body>
-    <div id="jjj">
-        <h1>Working on ForEx Stuff.</p>
-    </div>
     <div id="app">
-        {{ message }}
-        <br>      
-        <button @click="loadData">Load Data</button>
-        <br>
+        <div class="header">
+            <h3>Forex KPI</h3>
+            <button class="button" @click="loadData">Load Data</button>
+        </div>
         <div class="tablecontainer">
             <table>
                 <thead>
@@ -28,7 +28,7 @@
                         <th>mid_c</th>
                         <th>MACD_Cross</th>
                         <th>BB_Signal</th>
-                        <th>Body Perc</th>
+                        <th>Body %</th>
                         <th>Direction</th>
                         <th>Hammer</th>
                         <th>Doji</th>
@@ -40,32 +40,32 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in kpiData" >
-                        <td>{{ item.PAIR }} </td>	
-                        <td>{{ item.time }} </td>	
-                        <td>{{ item.volume }} </td>	
-                        <td>{{ item.mid_o }} </td>	
-                        <td>{{ item.mid_h }} </td>	
-                        <td>{{ item.mid_l }} </td>	
-                        <td>{{ item.mid_c }} </td>	
-                        <td>{{ item.MACD_CROSS }} </td>	
-                        <td>{{ item.BB_SIGNAL }} </td>	
-                        <td>{{ item.BODY_PERC.toFixed(2) }} </td>	
-                        <td>{{ item.DIRECTION }} </td>	
-                        <td>{{ item.HAMMER }} </td>	
-                        <td>{{ item.DOJI }} </td>	
-                        <td>{{ item.MARUBOZU }} </td>	
-                        <td>{{ item.SPINNING_TOP }} </td>	
-                        <td>{{ item.ENGULFING }} </td>	
-                        <td>{{ item.TREND }} </td>	
+                        <td>{{ item.PAIR }}</td>    
+                        <td>{{ item.time }}</td>    
+                        <td>{{ item.volume }}</td>  
+                        <td>{{ item.mid_o }}</td>   
+                        <td>{{ item.mid_h }}</td>   
+                        <td>{{ item.mid_l }}</td>   
+                        <td>{{ item.mid_c }}</td>   
+                        <td>{{ item.MACD_CROSS }}</td>  
+                        <td>{{ item.BB_SIGNAL }}</td>   
+                        <td>{{ item.BODY_PERC.toFixed(2) }}</td>    
+                        <td>{{ item.DIRECTION }}</td>   
+                        <td>{{ item.HAMMER }}</td>  
+                        <td>{{ item.DOJI }}</td>    
+                        <td>{{ item.MARUBOZU }}</td>    
+                        <td>{{ item.SPINNING_TOP }}</td>    
+                        <td>{{ item.ENGULFING }}</td>   
+                        <td>{{ item.TREND }}</td>   
                     </tr>
                 </tbody>
 
             </table>
 
         </div>
-        <!-- <pre>{{JSON.stringify(kpiData, null, 2) }}</pre> -->
+        <!-- <pre>{{JSON.stringify(kpiData, null, 2) }}</pre>  -->
     </div>
-    
     <script src="app.js"></script>
 </body>
 </html>
+
