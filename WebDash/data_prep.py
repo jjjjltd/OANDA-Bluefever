@@ -168,7 +168,6 @@ def prepare_data():
 def save_file():
     api_data = prepare_data()
     with open('data.json', 'w') as f:
-        print(f.name)
         f.write(api_data)
 
 if __name__ == "__main__":
