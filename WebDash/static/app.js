@@ -2,18 +2,21 @@ var app = new Vue({
     el: '#app',
     data: {
         message: 'Hello Vue!',
-        kpiData: {}
+        kpiData: {},
+        timer: null,
+        showPrices: false,
+        priceData: []
     },
     created: function() {
         this.loadData();
     },
     methods: {
         loadData: async function() {
-            console.log("Loading data")
+            console.log("Loading data");
             const response = await fetch('/kpi_data', {cache: "no-store"});
             const data = await response.json();
             this.kpiData = data;  
-            setTimeout(this.loadData, 15000)          
+            this.timer = setTimeout(this.loadData, 15000);          
         },
         applyOnOffClass: function(val) {
             if (val === 0 || val === false) {
@@ -30,6 +33,24 @@ var app = new Vue({
             } else if (val === -1) {
             return 'alert_red';
             }
+        },
+        loadPrices: async function (pair) {
+            this.priceData = [];
+            const response = await fetch('/kpi_data/' + pair);
+            const data = await response.json();
+            this.priceData = data;
+            this.showPrices = true;  
+        },
+        rowSelected: function(pair) {
+            clearInterval(this.timer);
+            this.loadPrices(pair);
+        },
+        goHome: function() {
+
+            clearInterval(this.timer);
+            this.showPrices = false;
+            this.loadData();
+
         }
     }
 })
