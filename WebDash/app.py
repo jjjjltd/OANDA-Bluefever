@@ -7,6 +7,10 @@ app.wsgi_app = WhiteNoise(
     app.wsgi_app, root="static/", index_file=True, autorefresh=True
 )
 
+@app.route("/hello")
+def hello():
+    return("Hello")
+
 @app.route("/kpi_data")
 def get_kpi_data():
     # TODO:  Add robustness to this.
