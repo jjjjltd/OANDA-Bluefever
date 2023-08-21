@@ -48,6 +48,10 @@ table th, table td {
     background-color: #5a6669;
 }
 
+#chartDiv {
+    height: 80vh;
+}
+
 .alert_green {
     background-color: rgba(21, 182, 99, 0.698);
 }

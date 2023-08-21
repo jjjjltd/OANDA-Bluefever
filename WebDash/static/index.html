@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
+    <script src="plotly-2.25.2.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <title>JJJ Forex WIP</title>
@@ -15,7 +17,7 @@
             <h3>Forex KPI {{kpiData.updated}}</h3>
             <button class="button" @click="goHome">Home</button>
         </div>
-        <div class="tablecontainer" v-if="showPrices==false">
+        <div class="tablecontainer" v-show="showPrices==false">
             <table>
                 <thead>
                     <tr>
@@ -55,8 +57,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="priceChart" v-if="showPrices==true">
-            <pre>{{ JSON.stringify(priceData, null, 2)}}</pre>
+        <div class="priceChart" v-show="showPrices==true">
+            <div id="chartDiv">
+
+            </div>
+            <!-- <pre>{{ JSON.stringify(priceData, null, 2)}}</pre> -->
         </div>
     </div>
     <script src="app.js"></script>

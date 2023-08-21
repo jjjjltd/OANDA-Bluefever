@@ -2,6 +2,7 @@
 
 import pandas as pd
 from dateutil.parser import *
+import datetime as dt
 import utils
 import requests
 import defs
@@ -72,9 +73,28 @@ class OandaAPI():
         else:
             return response.status_code, response.json()
     
+    def fetch_candles(self, pair_name, count=100, granularity="H1"):
+        url = f"{defs.OANDA_URL}/instruments/{pair_name}/candles"
+
+        params = dict(
+            granularity = granularity,
+            price = "M"
+        )        
+        params['count'] = count
+
+        response = self.session.get(url, params=params, headers=defs.SECURE_HEADER)
+
+        if response.status_code != 200:
+            return response.status_code, None
+
+        json_data =  response.json()['candles']
+        return response.status_code, OandaAPI.candles_to_df(json_data)
+
+
     @classmethod
     def candles_to_df(cls, json_data):
-        prices = ["bid", "mid", "ask"]
+        # prices = ["bid", "mid", "ask"]
+        prices = ["mid"]
         ohlc = ["o", "h", "l", "c"]
         
         our_data = []
@@ -94,6 +114,20 @@ class OandaAPI():
         df = pd.DataFrame.from_dict(our_data)
         df['time'] = [parse(x) for x in df.time]
         return df
+    
+    @classmethod
+    def pricing_api(cls, pair, count=50, granularity = "M5"):
+        api = OandaAPI()
+        code, candles_df = api.fetch_candles(pair, count, granularity)
+        if candles_df is not None:
+            candles_df['time'] = [dt.datetime.strftime(x, "%m-%d- %H %M") for x in candles_df.time]
+            return candles_df.to_dict(orient='records')
+        return []
+    
+    @classmethod
+    def dumb_test(cls):
+        return "Dumb test text"
+
 
     def save_candlestick(self, df, pair, granularity):
         """ Save candlestick dataframe to csv"""
@@ -133,8 +167,8 @@ class OandaAPI():
 
 if __name__ == "__main__":
     api = OandaAPI()
-    date_from = utils.get_utc_dt_from_string("2019-05-05 18:00:00")
-    date_to = utils.get_utc_dt_from_string("2019-05-10 18:00:00")
-    res, df = api.fetch_candlesticks("EUR_USD", date_from=date_from, date_to=date_to, as_df=True)
-    print(df.info())
-    
+    # date_from = utils.get_utc_dt_from_string("2019-05-05 18:00:00")
+    # date_to = utils.get_utc_dt_from_string("2019-05-10 18:00:00")
+    # res, df = api.fetch_candlesticks("EUR_USD", date_from=date_from, date_to=date_to, as_df=True)
+    # print(df.info())
+    print(OandaAPI.pricing_api("GBP_USD"))    
